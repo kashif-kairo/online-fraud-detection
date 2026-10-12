@@ -1,0 +1,17 @@
+pandas
+numpy
+scikit-learn
+joblib
+fastapi
+uvicorn[standard]
+streamlit
+requests
+pydantic
+matplotlib
+seaborn
+jupyter
+pytest
+httpx
+mlflow
+azure-ai-ml
+azure-identity

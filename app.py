@@ -1,16 +1,16 @@
 import streamlit as st
-import requests
+from src.prediction import predict_fraud
 
 # Page configuration
 st.set_page_config(
-    page_title="Fraud Detection",
+    page_title="Online Fraud Detection",
     page_icon="🛡️",
     layout="centered"
 )
 
-# Title
+# Application title
 st.title("🛡️ Online Fraud Detection")
-st.write("Enter the transaction details to check for fraud.")
+st.write("Enter the transaction details to check whether it is fraudulent.")
 
 st.divider()
 
@@ -70,7 +70,6 @@ with st.form("transaction_form"):
 
 # Prediction
 if submitted:
-
     transaction = {
         "step": step,
         "type": transaction_type,
@@ -82,14 +81,7 @@ if submitted:
     }
 
     try:
-        response = requests.post(
-            "http://127.0.0.1:8000/predict",
-            json=transaction,
-            timeout=30
-        )
-
-        response.raise_for_status()
-        result = response.json()
+        result = predict_fraud(transaction)
 
         st.divider()
 
@@ -98,8 +90,5 @@ if submitted:
         else:
             st.success("✅ NOT FRAUD")
 
-    except requests.exceptions.RequestException:
-        st.error(
-            "Unable to connect to the prediction API. "
-            "Please ensure the FastAPI server is running."
-        )
+    except Exception:
+        st.error("Prediction failed. Please try again.")
